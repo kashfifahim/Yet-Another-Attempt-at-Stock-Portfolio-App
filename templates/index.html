@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Portfolio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Family Stock Portfolio</h2>
+        <table>
+            <tr>
+                <th>Stock</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Equity</th>
+                <th>Last Updated</th>
+            </tr>
+            {% for stock, price in prices.items() %}
+            <tr>
+                <td data-label="Stock">{{ stock }}</td>
+                <td data-label="Quantity">{{ stocks[stock] }}</td>
+                <td data-label="Price">
+                    {% if price is number %}
+                        ${{ "{:,.2f}".format(price) }}
+                    {% else %}
+                        {{ price }}
+                    {% endif %}
+                </td>
+                <td data-label="Equity">
+                    {% if price is number %}
+                        ${{ "{:,.2f}".format(stocks[stock] * price) }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td data-label="Time">{{ timestamps[stock]|default("N/A") }}</td>
+            </tr>
+            {% endfor %}
+            <tr data-label="Total Portfolio Equity">
+                <td colspan="3" style="text-align: right;"><strong>Total Portfolio Equity:</strong></td>
+                <td>$<strong>{{ "{:,.2f}".format(total) }}</strong></td>
+            </tr>
+            <tr data-label="Total Shareholder Equity">
+                <td colspan="3" style="text-align: right;"><strong>Total Equity For Each Shareholder:</strong></td>
+                <td>$<strong>{{ "{:,.2f}".format(total/8) }}</strong></td>
+                
+            </tr>
+            {% set profit_loss = (total/8) - 1250 %}
+            <tr data-label="Profit Loss" style="background-color: {% if profit_loss > 0 %}#4CAF50{% elif profit_loss < 0 %}red{% else %}yellow{% endif %};">
+                <td colspan="3" style="text-align: right;"><strong>Profit/Loss:</strong></td>
+                <td>$<strong>{{ "{:,.2f}".format(profit_loss) }}</strong></td>
+            </tr>
+        </table>        
+        <div id="attribution">
+            <p>&copy; 2023 <a href="https://linkedin.com/in/kashfifahim" target="_blank">Kashfi Fahim</a>.  All Rights Reserved.</p>
+        </div>
+    </div>
+    
+</body>
+</html>
