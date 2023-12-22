@@ -64,6 +64,3 @@ def cache_filename(symbol):
 def read_cache(filename):
     with open(filename, 'r') as file:
         return json.load(file)
-
-if __name__ == '__main__':
-    app.run(debug=True)
